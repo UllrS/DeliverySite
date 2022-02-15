@@ -1,0 +1,19 @@
+
+Условные операторы
+  {{ if eq .Login "log"}}
+  {{ else if }}
+  {{ else }}
+  {{ end }}
+
+  eq ==
+  ne !=
+  lt <
+  gt >
+
+
+  Циклы
+  <ul>
+    {{ range .Tags }}
+    <h4>{{ . }}</h4>
+    {{ end }}
+  </ul>

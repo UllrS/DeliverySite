@@ -1,0 +1,19 @@
+
+.card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 32rem;
+    background-color: red;
+  }
+.card_img{
+    position: absolute;
+    width: 150px;
+    background-color: red;
+}
+.card_text{
+    position: absolute;
+    width: 100px;
+    background-color: red;
+}

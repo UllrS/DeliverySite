@@ -1,0 +1,49 @@
+
+CREATE TABLE `admins` (
+  `id` int(5) NOT NULL,
+  `login` varchar(64) NOT NULL,
+  `password` varchar(64) NOT NULL,
+  `token` varchar(64) DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `merchants` (
+  `id` int(12) UNSIGNED NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `addr` varchar(100) NOT NULL DEFAULT '',
+  `anons` varchar(500) NOT NULL DEFAULT '',
+  `img` varchar(100) DEFAULT '',
+  `date` date NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `orders` (
+  `id` int(6) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `user_id` int(6) DEFAULT NULL,
+  `basket` json DEFAULT NULL,
+  `tel` varchar(15) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `price` float DEFAULT NULL,
+  `category` varchar(100) NOT NULL DEFAULT '',
+  `anons` varchar(500) DEFAULT '',
+  `merch` int(12) NOT NULL,
+  `portion` float NOT NULL,
+  `unit` varchar(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `users` (
+  `id` int(12) UNSIGNED NOT NULL,
+  `name` varchar(64) DEFAULT NULL,
+  `password` varchar(64) DEFAULT NULL,
+  `token` varchar(64) DEFAULT NULL,
+  `basket` json DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

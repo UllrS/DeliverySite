@@ -1,0 +1,23 @@
+{{ define "create_merch"}}
+{{template "header"}}
+<main role="main" class="inner cover">
+  <b>Create</b>
+  <form action="/save_merchant" method="post" enctype="multipart/form-data">
+      <input type="text" name="title" id="title" class="form-control" placeholder="title"><br>
+      <!-- <input type="text" name="merch_type" id="merch_type" class="form-control" placeholder="merch_type"><br> -->
+      <input type="text" name="addr" id="addr" class="form-control" placeholder="addr"><br>
+      <input type="file" name="image" id="image"><br>
+      <select name="merch_type" id="merch_type">
+        <option value="">Категория товаров</option>
+        <option value="public_catering">Public catering</option>
+        <option value="grocery_stores">Grocery stores</option>
+        <option value="pharmacies">Pharmacies</option>
+        <option value="household_stores">Household stores</option>
+        <option value="transfer">Transfer</option>
+      </select>
+      <textarea name="anons" id="anons" class="form-control" placeholder="anons"></textarea><br>
+      <button class="btn btn-warning">add</button>
+  </form>
+</main>
+{{template "footer"}}
+{{ end }}

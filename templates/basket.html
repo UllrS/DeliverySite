@@ -1,0 +1,35 @@
+{{ define "basket"}}
+{{template "header"}}
+
+<main class="px-3">
+  {{ range . }}
+
+    <div class="alert alert-info product_card">
+      <h3>{{ .Name }}</h3><br>
+      <img src="img/fff.png" alt="no image">
+      <span>{{ .Id }}</span>
+      <span>{{ .Price }}</span>
+      <span>{{ .Anons }}</span>
+      <span>{{ .Merch }}</span>
+      <span>{{ .Portion }}</span>
+      <span>{{ .Unit }}</span>
+      <a href="/" class="btn btn-warning">Info</a>
+          
+    </div>
+    {{ else }}
+    <b>No data</b>
+    {{ end }}
+<form action="/checkout" method="post">
+    <div class="form-floating">
+    <input type="tel" class="form-control" name="tel" id="tel" placeholder="">
+    <label for="floatingInput">Telephone</label>
+    </div>
+    <div class="form-floating">
+    <input type="text"  class="form-control" name="billing" id="billing" placeholder="">
+    <label for="floatingInput">Address</label>
+    </div>
+    <button class="btn btn-warning">checkout</button>
+</form>
+</main>
+{{template "footer"}}
+{{ end }}

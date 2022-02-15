@@ -1,0 +1,45 @@
+.card_merch{
+    height: 280px;
+    display: flex;
+}
+.card_anons{
+    padding: 15px;
+    width: 70%;
+    height: 200px;
+    word-wrap: break-word;
+    flex:0 0 auto;width:70%;
+    text-align: center;
+    overflow: hidden;
+}
+.prod_anons{
+    background-color: red;
+    flex-direction: column;
+}
+.card_img{
+    width: 200px;
+    height: 200px;
+}
+.card_control_btn{
+    float: right;
+}
+.bw{
+    word-wrap: break-word;
+    height: 150px;
+    overflow: hidden;
+}
+.contr_words{
+    width: 40%;
+    height: 30px;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+.anons_words{
+    width: auto;
+    height: 100px;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+.btn_circle{
+    border-radius: 50%;
+    border-width: 25px;
+}

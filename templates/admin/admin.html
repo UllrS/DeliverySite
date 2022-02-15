@@ -1,0 +1,17 @@
+{{ define "admin"}}
+{{template "header"}}
+
+<main class="px-3">
+    <img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+    <a class="nav-link btn btn-warning" href="/create_product">create product</a>
+    <a class="nav-link btn btn-info" href="/create_merchant">create Merch<br></a><br>
+    <a class="nav-link btn btn-info" href="/delete_merchant">delete Merch<br></a>
+    <a class="nav-link btn btn-info" href="/delete_product">delete product<br></a>
+    <a class="nav-link btn btn-info" href="/delete_product">delete product<br></a><br>
+    <a class="nav-link btn btn-info" href="/users">show users<br></a>
+    <a class="nav-link btn btn-info" href="/product">show users<br></a>
+    <a class="nav-link btn btn-info" href="/merchant">show merchants<br></a>
+    <a class="nav-link btn btn-info" href="/courier">show Couriers<br></a>
+</main>
+{{template "footer"}}
+{{ end }}
