@@ -40,6 +40,5 @@
     word-break: break-word;
 }
 .btn_circle{
-    border-radius: 50%;
-    border-width: 25px;
+    border-radius: 100%;
 }

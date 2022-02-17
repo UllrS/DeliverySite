@@ -1,13 +1,14 @@
-{{ define "create_merch"}}
+{{ define "edit_merch"}}
 {{template "header"}}
 <main role="main" class="inner cover">
-  <b>Create</b>
-  <form action="/save_merchant" method="post" enctype="multipart/form-data">
-      <input type="text" name="title" id="title" class="form-control" placeholder="title"><br>
+  <b>Edit</b>
+  <form action="/admin/merchant/{{ .Id }}/edit" method="post" enctype="multipart/form-data">
+      <h3  name="id" id="id">{{ .Id }}</h3>
+      <input type="text" name="title" id="title" class="form-control" value="{{ .Name }}" placeholder="title"><br>
       <!-- <input type="text" name="merch_type" id="merch_type" class="form-control" placeholder="merch_type"><br> -->
-      <input type="text" name="addr" id="addr" class="form-control" placeholder="addr"><br>
+      <input type="text" name="addr" id="addr" class="form-control" value="{{ .Addr }}" placeholder="addr"><br>
       <input type="file" name="image" id="image"><br>
-      <select name="merch_type" id="merch_type">
+      <select ite required name="merch_type" id="merch_type">
         <option value="">Категория товаров</option>
         <option value="public_catering">Public catering</option>
         <option value="grocery_stores">Grocery stores</option>
@@ -15,7 +16,7 @@
         <option value="household_stores">Household stores</option>
         <option value="transfer">Transfer</option>
       </select>
-      <textarea name="anons" id="anons" class="form-control" placeholder="anons"></textarea><br>
+      <textarea name="anons" id="anons" class="form-control" placeholder="anons">{{ .Anons }}</textarea><br>
       <button class="btn btn-warning">add</button>
   </form>
 </main>

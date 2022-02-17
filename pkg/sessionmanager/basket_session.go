@@ -8,6 +8,7 @@ import (
 )
 
 func Add_update_basket_cookie(w http.ResponseWriter, r *http.Request, prod_id int64) error {
+	tools.Logger.Trace("start function")
 	session := get_session(r)
 
 	var basket_map map[int]int
@@ -36,9 +37,11 @@ func Add_update_basket_cookie(w http.ResponseWriter, r *http.Request, prod_id in
 		var i = session.Values["user_id"].(int)
 		err = repository.Basket_update(i, string(j))
 	}
+	tools.Logger.Trace("end function")
 	return err
 }
 func Del_update_basket_cookie(w http.ResponseWriter, r *http.Request, prod_id int64) error {
+	tools.Logger.Trace("start function")
 	session := get_session(r)
 
 	var basket_map map[int]int
@@ -67,15 +70,36 @@ func Del_update_basket_cookie(w http.ResponseWriter, r *http.Request, prod_id in
 		var i = session.Values["user_id"].(int)
 		err = repository.Basket_update(i, string(j))
 	}
+	tools.Logger.Trace("end function")
 	return err
 }
 func Get_User(w http.ResponseWriter, r *http.Request) int {
+	tools.Logger.Trace("start function")
 	session := get_session(r)
 	var user int
 	user = 0
 	if session.Values["user_id"] != nil && session.Values["user_id"] != 0 {
 		user = session.Values["user_id"].(int)
+		tools.Logger.Trace("end function")
 		return user
 	}
+	tools.Logger.Trace("end function")
 	return user
+}
+func Get_Basket_Map(w http.ResponseWriter, r *http.Request) map[int]int {
+	tools.Logger.Trace("start function")
+	session := get_session(r)
+
+	var basket_map = map[int]int{}
+	if session.Values["basket"] != nil {
+		basket_map = tools.JsonToMap(session.Values["basket"].([]byte))
+	}
+	tools.Logger.Trace("end function")
+	return basket_map
+}
+func Clear_Basket_Map(w http.ResponseWriter, r *http.Request) {
+	tools.Logger.Trace("start function")
+	session := get_session(r)
+	delete(session.Values, "basket")
+	session.Save(r, w)
 }

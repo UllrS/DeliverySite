@@ -5,7 +5,7 @@
   {{ range . }}
     <div class="card shadow-sm card_merch alert alert-info">
       <div class="d-flex">
-        <img class="card_img" width="200" src="/static/img/fff.png" alt="no image">
+        <img class="card_img" width="200" height="200" src="/assets/images/merch/{{ .Id }}.png" alt="no image">
         <div class="card_anons">
           <h3 class="mb-0">{{ .Name }}</h3>
           <strong class="d-inline-block mb-2 text-primary">{{ .Type }}</strong>
@@ -17,9 +17,10 @@
           <h6 class="text-muted contr_words">{{ .Addr }}</h6>
           <h6 class="text-muted contr_words">{{ .Date }}</h6>
           <div class="btn-group contr_words control_btn">
-            <a href="/admin/merchant/{{ .Id }}" type="button" class="btn btn-sm btn-outline-secondary btn-danger">Del</a>
+            <a href="/admin/merchant/{{ .Id }}/delete" type="button" class="btn btn-sm btn-outline-secondary btn-danger">Del</a>
             <a href="/admin/merchant/{{ .Id }}" type="button" class="btn btn-sm btn-outline-secondary">View</a>
-            <a href="/admin/merchant/{{ .Id }}" type="button" class="btn btn-sm btn-warning">Edit</a>
+            <a href="/admin/merchant/{{ .Id }}/edit" type="button" class="btn btn-sm btn-warning">Edit</a>
+            <a href="/admin/merchant/{{ .Id }}/product/create" type="button" class="btn btn-sm btn-info">Add product</a>
           </div>
         </div>
       </div>

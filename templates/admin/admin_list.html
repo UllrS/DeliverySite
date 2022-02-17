@@ -1,0 +1,19 @@
+{{ define "admin_list"}}
+{{template "header"}}
+<main role="main" class="inner cover">
+    {{ range . }}
+      <div class="alert alert-info product_card">
+        <div class="d-flex justify-content-between align-items-stretch">
+            <h5>{{.Id}}</h5>
+            <h5>{{.Login}}</h5>
+            <h5>{{.Password}}</h5>
+            <h5>{{.Token}}</h5>
+        </div>
+      </div>
+      
+      {{ else }}
+      <b>No data</b>
+      {{ end }}
+</main>
+{{template "footer"}}
+{{ end }}

@@ -10,6 +10,7 @@ import (
 )
 
 func LoadFile(w http.ResponseWriter, r *http.Request, id int, dir string) {
+	Logger.Error("start function")
 	uploadfile, handle, err := r.FormFile("image")
 	if ErrorManager(err, w) {
 		return

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"knocker/models"
-	"log"
+	"knocker/pkg/tools"
 )
 
 var merch_list = []models.Merchant{}
@@ -16,7 +16,7 @@ func repository_connect() (*sql.DB, error) {
 
 	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/golang")
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Error(err.Error())
 		return nil, err
 	}
 	return db, err
@@ -25,14 +25,14 @@ func Select_all(table_name string) (*sql.Rows, error) {
 
 	db, err := repository_connect()
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Error(err.Error())
 		return nil, err
 	}
 	defer db.Close()
 	var query_string = fmt.Sprintf("SELECT * FROM `%s`", table_name)
 	res, err := db.Query(query_string)
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return nil, err
 	}
 	return res, err
@@ -41,7 +41,7 @@ func Select_merch_list_where(field string, field_value string) ([]models.Merchan
 
 	db, err := repository_connect()
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Error(err.Error())
 		return nil, err
 	}
 	defer db.Close()
@@ -49,7 +49,7 @@ func Select_merch_list_where(field string, field_value string) ([]models.Merchan
 	var query_string = fmt.Sprintf("SELECT * FROM `merchants` WHERE `%s` LIKE '%s'", field, field_value)
 	res, err := db.Query(query_string)
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return nil, err
 	}
 	merch_list = []models.Merchant{}
@@ -57,6 +57,7 @@ func Select_merch_list_where(field string, field_value string) ([]models.Merchan
 		var merch models.Merchant
 		err = res.Scan(&merch.Id, &merch.Name, &merch.Type, &merch.Addr, &merch.Anons, &merch.Img, &merch.Date)
 		if err != nil {
+			tools.Logger.Warn(err.Error())
 			return nil, err
 		}
 
@@ -64,39 +65,59 @@ func Select_merch_list_where(field string, field_value string) ([]models.Merchan
 	}
 	return merch_list, err
 }
-func Select_product_where(field string, field_value string) (*models.Product, error) {
+func Select_merch_where(merch_id int) (*models.Merchant, error) {
 
 	db, err := repository_connect()
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return nil, err
 	}
 	defer db.Close()
 
-	var query_string = fmt.Sprintf("SELECT * FROM `products` WHERE `%s` = '%s'", field, field_value)
+	var query_string = fmt.Sprintf("SELECT * FROM `merchants` WHERE `id` = '%d'", merch_id)
+	var merchant models.Merchant
+	res := db.QueryRow(query_string)
+	err = res.Scan(&merchant.Id, &merchant.Name, &merchant.Type, &merchant.Addr, &merchant.Anons, &merchant.Img, &merchant.Date)
+	if err != nil {
+		tools.Logger.Warn(err.Error())
+		return nil, err
+	}
+	return &merchant, err
+}
+func Select_product_where(key string, value string) (*models.Product, error) {
+
+	db, err := repository_connect()
+	if err != nil {
+		tools.Logger.Warn(err.Error())
+		return nil, err
+	}
+	defer db.Close()
+
+	var query_string = fmt.Sprintf("SELECT * FROM `products` WHERE `%s` = '%s'", key, value)
 	var product models.Product
 	res := db.QueryRow(query_string)
 	err = res.Scan(&product.Id, &product.Name, &product.Price, &product.Category, &product.Anons, &product.Merch, &product.Portion, &product.Unit)
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return nil, err
 	}
 	return &product, err
 }
-func Select_product_list_where(field string, field_value string) ([]models.Product, error) {
+func Select_product_list_where(key string, value string) ([]models.Product, error) {
+	tools.Logger.Trace("start function")
 
 	db, err := repository_connect()
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Error(err.Error())
 		return nil, err
 	}
 	defer db.Close()
 
-	var query_string = fmt.Sprintf("SELECT * FROM `products` WHERE `%s` = '%s'", field, field_value)
+	var query_string = fmt.Sprintf("SELECT * FROM `products` WHERE `%s` = '%s'", key, value)
 
 	res, err := db.Query(query_string)
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return nil, err
 	}
 	product_list = []models.Product{}
@@ -104,58 +125,60 @@ func Select_product_list_where(field string, field_value string) ([]models.Produ
 		var product models.Product
 		err = res.Scan(&product.Id, &product.Name, &product.Price, &product.Category, &product.Anons, &product.Merch, &product.Portion, &product.Unit)
 		if err != nil {
-			log.Println(err.Error())
+			tools.Logger.Warn(err.Error())
 			return nil, err
 		}
 
 		product_list = append(product_list, product)
 	}
+	tools.Logger.Trace("end function")
 	return product_list, err
 }
 func Insert_product(j models.Product) int {
 
+	tools.Logger.Trace("start function")
 	var id int
 	var query_string = fmt.Sprintf("INSERT INTO `products`(`name`, `price`, `category`, `anons`, `merch`, `portion`, `unit`) VALUES ('%s', '%.2f', '%s', '%s', '%d', '%.f', '%s')", j.Name, j.Price, j.Category, j.Anons, j.Merch, j.Portion, j.Unit)
 
 	db, err := repository_connect()
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Error(err.Error())
+		return 0
 	}
 	defer db.Close()
 	insert, err := db.Query(query_string)
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
+		return 0
 	}
 	defer insert.Close()
 
-	fmt.Println(j)
 	query_string = fmt.Sprintf("SELECT `id` FROM `products` WHERE `name` LIKE '%s' AND `category` LIKE '%s' AND `anons` LIKE '%s' AND `merch` LIKE '%d' AND `portion` LIKE '%.f' AND `unit` LIKE '%s'", j.Name, j.Category, j.Anons, j.Merch, j.Portion, j.Unit)
 	res := db.QueryRow(query_string)
 	err = res.Scan(&id)
-	fmt.Println(res)
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return 0
 	}
 
-	fmt.Println("DB INSERT")
-	fmt.Println(id)
+	tools.Logger.Trace("end function")
 	return id
 }
 func Insert_merchant(j models.Merchant) int {
 
+	tools.Logger.Trace("start function")
 	var id int
 	var query_string = fmt.Sprintf("INSERT INTO `merchants`(`name`, `type`, `addr`, `anons`, `date`) VALUES ('%s', '%s', '%s', '%s', '%s')", j.Name, j.Type, j.Addr, j.Anons, j.Date)
 
 	db, err := repository_connect()
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return 0
 	}
 	defer db.Close()
 	insert, err := db.Query(query_string)
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return 0
 	}
 	defer insert.Close()
@@ -164,46 +187,96 @@ func Insert_merchant(j models.Merchant) int {
 	res := db.QueryRow(query_string)
 	err = res.Scan(&id)
 	if err != nil {
-		log.Println(err.Error())
+		tools.Logger.Warn(err.Error())
 		return 0
 	}
-
-	fmt.Println("DB INSERT")
-	fmt.Println(id)
+	tools.Logger.Trace("end function")
 	return id
 }
-func Insert_order(j models.Order) {
+func Update_merchant(j models.Merchant) error {
 
-	var query_string = fmt.Sprintf("INSERT INTO `orders`(`user`, `tel`, `billing`, `basket`) VALUES ('%d', '%s', '%s', '%s')", j.User, j.Tel, j.Billing, j.Basket)
+	tools.Logger.Trace("start function")
+	var query_string = fmt.Sprintf("UPDATE `merchants` SET `name`='%s',  `addr`='%s', `anons`='%s', `date`='%s' WHERE `id`='%d'", j.Name, j.Addr, j.Anons, j.Date, j.Id)
 
 	db, err := repository_connect()
 	if err != nil {
-		log.Println(err.Error())
-		return
+		tools.Logger.Warn(err.Error())
+		return err
 	}
 	defer db.Close()
-	insert, err := db.Query(query_string)
-	if err != nil {
-		log.Println(err.Error())
-		return
+
+	if _, err = db.Exec(query_string); err != nil {
+		tools.Logger.Warn(err.Error())
+		return err
 	}
-	defer insert.Close()
+	tools.Logger.Trace("end function")
+	return err
+}
+func Update_Product(j models.Product) error {
+
+	tools.Logger.Trace("start function")
+	var query_string = fmt.Sprintf("UPDATE `products` SET `name`='%s', `price`='%.2f', `category`='%s', `anons`='%s', `merch`='%d', `portion`='%.f', `unit`='%s' WHERE `id`='%d'", j.Name, j.Price, j.Category, j.Anons, j.Merch, j.Portion, j.Unit, j.Id)
+
+	db, err := repository_connect()
+	if err != nil {
+		tools.Logger.Warn(err.Error())
+		return err
+	}
+	defer db.Close()
+
+	if _, err = db.Exec(query_string); err != nil {
+		tools.Logger.Error(err.Error())
+		return err
+	}
+	tools.Logger.Trace("end function")
+	return err
+}
+
+func Delete_merch(id int) error {
+
+	tools.Logger.Trace("start function")
+	var query_string = fmt.Sprintf("DELETE FROM `merchants` WHERE `id` = '%d'", id)
+
+	db, err := repository_connect()
+	if err != nil {
+		tools.Logger.Warn(err.Error())
+		return err
+	}
+	defer db.Close()
+	// Delete Merch from DB
+	_, err = db.Exec(query_string)
+	if err != nil {
+		tools.Logger.Warn(err.Error())
+		return err
+	}
+	// Delete all Merch products from DB
+	query_string = fmt.Sprintf("DELETE FROM `products` WHERE `merch` = '%d'", id)
+
+	_, err = db.Exec(query_string)
+	if err != nil {
+		tools.Logger.Warn(err.Error())
+		return err
+	}
+	tools.Logger.Trace("end function")
+	return nil
 
 }
-func Select_User(table_name string, login string, password string) (*sql.Rows, error) {
+func Delete_prod(id int) error {
+
+	tools.Logger.Trace("start function")
+	var query_string = fmt.Sprintf("DELETE FROM `products` WHERE `id` = '%d'", id)
 
 	db, err := repository_connect()
 	if err != nil {
-		log.Println(err.Error())
-		return nil, err
+		tools.Logger.Warn(err.Error())
+		return err
 	}
 	defer db.Close()
-
-	var query_string = fmt.Sprintf("SELECT * FROM `%s` WHERE `login` LIKE '%s' AND `password` LIKE '%s' LIMIT 1", table_name, login, password)
-	res, err := db.Query(query_string)
+	_, err = db.Exec(query_string)
 	if err != nil {
-		log.Println(err.Error())
-		return nil, err
+		tools.Logger.Warn(err.Error())
+		return err
 	}
-	return res, err
+	tools.Logger.Trace("end function")
+	return nil
 }

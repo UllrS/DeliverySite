@@ -1,18 +1,23 @@
-{{ define "create_prod"}}
+{{ define "edit_prod"}}
 {{template "header"}}
-<main role="main" class="inner cover">
+<main role="main" class="px-3">
   <b>Create</b>
-  <form action="/save_product" method="post">
-      <input type="text" name="title" id="title" class="form-control" placeholder="title"><br>
-      <input type="text" name="price" id="price" class="form-control" placeholder="price"><br>
-      <input type="text" name="merch" id="merch" class="form-control" placeholder="merch"><br>
-      <input type="text" name="category" id="category" class="form-control" placeholder="category"><br>
-      <input type="text" name="portion" id="portion" class="form-control" placeholder="portion"><br>
-      <input type="text" name="unit" id="unit" class="form-control" placeholder="unit"><br>
-      <input type="file" name="img" id="img" class="form-control"><br>
-      <textarea name="anons" id="anons" class="form-control" placeholder="anons"></textarea><br>
+  <div class="alert alert-info product_card">
+    <form action="/admin/merchant/{{ .Merch }}/product/{{ .Id }}/edit" method="post" enctype="multipart/form-data">
+      <h3>ID({{ .Id }})</h3>
+      <input hidden type="text" name="prod_id" id="prod_id" class="form-control" value="{{ .Id }}"><br>
+      <input type="text" name="title" id="title" class="form-control" value="{{ .Name }}" placeholder="title"><br>
+      <input type="text" name="price" id="price" class="form-control" value="{{ .Price }}" placeholder="price"><br>
+      <input type="text" name="merch" id="merch" class="form-control" value="{{ .Merch }}" placeholder="merch"><br>
+      <input type="text" name="category" id="category" class="form-control" value="{{ .Category }}" placeholder="category"><br>
+      <input type="text" name="portion" id="portion" class="form-control" value="{{ .Portion }}" placeholder="portion"><br>
+      <input type="text" name="unit" id="unit" class="form-control" value="{{ .Unit }}" placeholder="unit">
+      <img class="card_img" width="200" height="200" src="/assets/images/prod/{{ .Id }}.png" alt="no image">
+      <input type="file" name="image" id="image" class="form-control">
+      <textarea name="anons" id="anons" class="form-control" placeholder="anons">{{ .Anons }}</textarea>
       <button class="btn btn-warning">add</button>
-  </form>
+    </form>
+  </div>
 </main>
 {{template "footer"}}
 {{ end }}

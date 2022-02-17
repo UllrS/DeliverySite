@@ -1,0 +1,12 @@
+{{ define "logs"}}
+{{template "header"}}
+<main role="main" class="inner cover">
+    {{ range . }}
+        <p>{{ . }}</p><br>
+      
+    {{ else }}
+      <b>No data</b>
+    {{ end }}
+</main>
+{{template "footer"}}
+{{ end }}

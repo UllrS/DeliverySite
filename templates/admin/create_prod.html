@@ -1,10 +1,10 @@
 {{ define "create_prod"}}
 {{template "header"}}
 <main role="main" class="inner cover">
-  <form action="/save_product" method="post" enctype="multipart/form-data">
+  <form action="/admin/merchant/{{ . }}/product/save" method="post" enctype="multipart/form-data">
       <input type="text" name="title" id="title" class="form-control" placeholder="title"><br>
       <input type="text" name="price" id="price" class="form-control" placeholder="price"><br>
-      <input type="text" name="merch" id="merch" class="form-control" placeholder="merch"><br>
+      <input type="text" name="merch" id="merch" class="form-control" value="{{ . }}" placeholder="merch"><br>
       <input type="text" name="category" id="category" class="form-control" placeholder="category"><br>
       <input type="text" name="portion" id="portion" class="form-control" placeholder="portion"><br>
       <input type="text" name="unit" id="unit" class="form-control" placeholder="unit"><br>

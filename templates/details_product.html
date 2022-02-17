@@ -3,8 +3,9 @@
 <main class="px-3">
     <h3>{{ .Name }}</h3>
     <img class="card_img" width="250" src="/assets/images/prod/{{ .Id }}.png" alt="no image">
-    <form action="/basket_add" method="post">
-        <input hidden type="text" value="{{ .Id }}" name="prod_id" id="prod_id"><br>
+    <form action="/basket/add" method="post">
+      <input hidden type="text" value="{{ .Id }}" name="prod_id" id="prod_id">
+      <input hidden type="text" value="{{ .Merch }}" name="merch" id="merch">
       <span>{{ .Portion }}</span><span>{{ .Unit }} </span><span>{{ .Price }}$</span>
       <button class="btn btn-danger">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">

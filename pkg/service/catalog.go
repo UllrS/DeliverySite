@@ -4,18 +4,19 @@ import (
 	"fmt"
 	"html/template"
 	"knocker/pkg/repository"
+	"knocker/pkg/tools"
 	"net/http"
 	"strings"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
 func Get_Merch_List(w http.ResponseWriter, r *http.Request) {
+	tools.Logger.Trace("start function")
 	var field string
 	var field_value string
 	field = "type"
-	field_value = strings.ReplaceAll(r.RequestURI, "/", "")
+	field_value = strings.ReplaceAll(r.RequestURI, "/merchant/", "")
 	if field_value == "allmerchants" {
 		field_value = "%"
 	}
@@ -30,38 +31,9 @@ func Get_Merch_List(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 	}
 	tmpl.ExecuteTemplate(w, "merchant_list", merch_list)
-}
-func Index(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/index.html", "templates/header.html", "templates/footer.html")
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-	}
-	tmpl.ExecuteTemplate(w, "index", nil)
-}
-func About(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/about.html", "templates/header.html", "templates/footer.html")
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-	}
-	tmpl.ExecuteTemplate(w, "about", nil)
+	tools.Logger.Trace("end function")
 }
 
-func Detail_product(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	w.WriteHeader(http.StatusOK)
-
-	product_detail, err := repository.Select_product_where("id", vars["prod_id"])
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-	}
-	tmpl, err := template.ParseFiles("templates/details_product.html", "templates/header.html", "templates/footer.html")
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-	}
-
-	tmpl.ExecuteTemplate(w, "details", product_detail)
-
-}
 func Detail_merchant(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	w.WriteHeader(http.StatusOK)
@@ -76,5 +48,22 @@ func Detail_merchant(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl.ExecuteTemplate(w, "product_list", product_list)
+
+}
+
+func Detail_product(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	w.WriteHeader(http.StatusOK)
+
+	product_detail, err := repository.Select_product_where("id", vars["prod_id"])
+	if err != nil {
+		tools.Logger.Error(err.Error())
+	}
+	tmpl, err := template.ParseFiles("templates/details_product.html", "templates/header.html", "templates/footer.html")
+	if err != nil {
+		tools.Logger.Error(err.Error())
+	}
+
+	tmpl.ExecuteTemplate(w, "details", product_detail)
 
 }
