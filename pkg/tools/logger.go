@@ -12,7 +12,7 @@ import (
 
 var Logger *logrus.Logger
 
-func InitLogger(lvl logrus.Level) {
+func InitLogger(lvl logrus.Level) string {
 	Logger = logrus.New()
 	Logger.SetReportCaller(true)
 	Logger.Formatter = &logrus.TextFormatter{
@@ -44,5 +44,5 @@ func InitLogger(lvl logrus.Level) {
 			logrus.WarnLevel,
 		},
 	})
-	Logger.Trace("logger initialized")
+	return "logger initialized"
 }

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	config "knocker/configs"
 	"knocker/pkg/service"
 	"knocker/pkg/sessionmanager"
 	"knocker/pkg/tools"
@@ -65,5 +66,5 @@ func HandleRequest() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets/"))))
 	tools.Logger.Debug("Start SERVER")
-	http.ListenAndServe(":5000", nil)
+	http.ListenAndServe(config.Config.GetAddress(), nil)
 }

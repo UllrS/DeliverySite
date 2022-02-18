@@ -1,24 +1,49 @@
-package settings
+package config
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"knocker/pkg/tools"
+	"os"
+)
 
-type Conf struct {
-	DATABASE       string
-	DATABASE_LOGIN string
-	DATABASE_PWD   string
-	DATABASE_TYPE  string
-	DATABASE_ADDR  string
-	DATABASE_NAME  string
+var Config Configs
+
+type Configs struct {
+	Server struct {
+		Port int    `json:"port"`
+		Ip   string `json:"ip"`
+	} `json:"server"`
+	Database struct {
+		System  string `json:"system"`
+		Login   string `json:"login"`
+		Pwd     string `json:"pwd"`
+		Connect string `json:"connect"`
+		Addr    string `json:"addr"`
+		Port    int    `json:"port"`
+		Name    string `json:"name"`
+	} `json:"database"`
 }
 
-func (c *Conf) GetDataSourceName() string {
-	return fmt.Sprintf("%s:%s@%s(%s)/%s", c.DATABASE_LOGIN, c.DATABASE_PWD, c.DATABASE_TYPE, c.DATABASE_ADDR, c.DATABASE_NAME)
+func (c *Configs) GetSqlSettings() (string, string) {
+	return c.Database.System, fmt.Sprintf("%s:%s@%s(%s:%d)/%s", c.Database.Login, c.Database.Pwd, c.Database.Connect, c.Database.Addr, c.Database.Port, c.Database.Name)
 }
-
-var DB_config = Conf{
-	DATABASE:       "mysql",
-	DATABASE_LOGIN: "root",
-	DATABASE_PWD:   "root",
-	DATABASE_TYPE:  "tcp",
-	DATABASE_ADDR:  "127.0.0.1:3306",
-	DATABASE_NAME:  "golang"}
+func (c *Configs) GetAddress() string {
+	return fmt.Sprintf("%s:%d", c.Server.Ip, c.Server.Port)
+}
+func (c *Configs) GetServerSettings() string {
+	return fmt.Sprintf("")
+}
+func InitConfig() {
+	file, err := os.Open("config.json")
+	if err != nil {
+		tools.Logger.Fatal(err.Error())
+	}
+	defer file.Close()
+	Config = Configs{}
+	decoder := json.NewDecoder(file)
+	err = decoder.Decode(&Config)
+	if err != nil {
+		tools.Logger.Fatal(err.Error())
+	}
+}

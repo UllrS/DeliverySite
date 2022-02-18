@@ -12,15 +12,6 @@ var product_list = []models.Product{}
 var product_detail = models.Product{}
 var order_detail = models.Order{}
 
-func repository_connect() (*sql.DB, error) {
-
-	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/golang")
-	if err != nil {
-		tools.Logger.Error(err.Error())
-		return nil, err
-	}
-	return db, err
-}
 func Select_all(table_name string) (*sql.Rows, error) {
 
 	db, err := repository_connect()

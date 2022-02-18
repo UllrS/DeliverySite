@@ -1,6 +1,7 @@
 package main
 
 import (
+	config "knocker/configs"
 	"knocker/pkg/handler"
 	"knocker/pkg/tools"
 
@@ -8,7 +9,7 @@ import (
 )
 
 func main() {
-	tools.InitLogger(6)
-	tools.Logger.Debug("logger initialized")
+	config.InitConfig()
+	tools.Logger.Debug(tools.InitLogger(6))
 	handler.HandleRequest()
 }
