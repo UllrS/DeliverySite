@@ -12,23 +12,18 @@ import (
 
 func Admin(w http.ResponseWriter, r *http.Request) {
 
-	tools.Logger.Trace("start function")
-
 	tmpl, err := template.ParseFiles("templates/admin/admin.html", "templates/header.html", "templates/footer.html")
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
 	tmpl.ExecuteTemplate(w, "admin", nil)
-	tools.Logger.Trace("end function")
 }
 func AdminSign(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	tmpl, err := template.ParseFiles("templates/admin/adminsign.html", "templates/header.html", "templates/footer.html")
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
 	tmpl.ExecuteTemplate(w, "adminsign", nil)
-	tools.Logger.Trace("end function")
 }
 
 func AdminLogin(w http.ResponseWriter, r *http.Request) {

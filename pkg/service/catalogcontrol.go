@@ -15,16 +15,13 @@ import (
 )
 
 func Create_merch(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	tmpl, err := template.ParseFiles("templates/admin/create_merch.html", "templates/header.html", "templates/footer.html")
 	if err != nil {
 		tools.Logger.Error(err.Error())
 	}
 	tmpl.ExecuteTemplate(w, "create_merch", nil)
-	tools.Logger.Trace("end function")
 }
 func Create_prod(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	vars := mux.Vars(r)
 	merch_id, err := strconv.ParseInt(vars["merch_id"], 10, 32)
 	tmpl, err := template.ParseFiles("templates/admin/create_prod.html", "templates/header.html", "templates/footer.html")
@@ -32,11 +29,9 @@ func Create_prod(w http.ResponseWriter, r *http.Request) {
 		tools.Logger.Error(err.Error())
 	}
 	tmpl.ExecuteTemplate(w, "create_prod", merch_id)
-	tools.Logger.Trace("end function")
 }
 
 func Save_prod(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 
 	name := r.FormValue("title")
 	anons := r.FormValue("anons")
@@ -66,10 +61,8 @@ func Save_prod(w http.ResponseWriter, r *http.Request) {
 	tools.LoadFile(w, r, id, "prod")
 
 	http.Redirect(w, r, "/admin/", http.StatusSeeOther)
-	tools.Logger.Trace("end function")
 }
 func Save_merch(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	name := r.FormValue("title")
 	merch_type := r.FormValue("merch_type")
 	addr := r.FormValue("addr")
@@ -78,7 +71,6 @@ func Save_merch(w http.ResponseWriter, r *http.Request) {
 
 	if name == "" || merch_type == "" {
 		fmt.Fprintf(w, "Не хватает данных")
-		tools.Logger.Trace("Не хватает данных")
 		return
 	}
 	var merch_struct = models.Merchant{
@@ -96,10 +88,8 @@ func Save_merch(w http.ResponseWriter, r *http.Request) {
 	tools.LoadFile(w, r, id, "merch")
 
 	http.Redirect(w, r, "/admin/", http.StatusSeeOther)
-	tools.Logger.Trace("end function")
 }
 func Edit_merch(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	vars := mux.Vars(r)
 	merch_id, _ := strconv.ParseInt(vars["merch_id"], 10, 32)
 	name := r.FormValue("title")
@@ -110,7 +100,6 @@ func Edit_merch(w http.ResponseWriter, r *http.Request) {
 
 	if name == "" || merch_type == "" {
 		fmt.Fprintf(w, "Не хватает данных")
-		tools.Logger.Trace("Не хватает данных")
 		return
 	}
 	var merch_struct = models.Merchant{
@@ -129,10 +118,8 @@ func Edit_merch(w http.ResponseWriter, r *http.Request) {
 	tools.LoadFile(w, r, int(merch_struct.Id), "merch")
 
 	http.Redirect(w, r, "/admin/", http.StatusSeeOther)
-	tools.Logger.Trace("end function")
 }
 func Edit_Prod(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 
 	id, _ := strconv.ParseInt(r.FormValue("prod_id"), 10, 32)
 	name := r.FormValue("title")
@@ -168,11 +155,9 @@ func Edit_Prod(w http.ResponseWriter, r *http.Request) {
 	tools.LoadFile(w, r, int(prod_struct.Id), "prod")
 
 	http.Redirect(w, r, "/admin/", http.StatusSeeOther)
-	tools.Logger.Trace("end function")
 }
 
 func Adm_Merch_List(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	var field string
 	var field_value string
 	field = "type"
@@ -190,11 +175,9 @@ func Adm_Merch_List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tmpl.ExecuteTemplate(w, "admin_merchant_list", merch_list)
-	tools.Logger.Trace("end function")
 }
 
 func Admin_Merch_Edit(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	vars := mux.Vars(r)
 	merch_id, err := strconv.ParseInt(vars["merch_id"], 10, 32)
 	if err != nil {
@@ -211,11 +194,8 @@ func Admin_Merch_Edit(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 	}
 	tmpl.ExecuteTemplate(w, "edit_merch", merch)
-	tools.Logger.Trace("end function")
-
 }
 func Admin_Prod_Edit(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	vars := mux.Vars(r)
 	//merch_id := vars["merch_id"]
 	prod_id := vars["prod_id"]
@@ -230,11 +210,9 @@ func Admin_Prod_Edit(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 	}
 	tmpl.ExecuteTemplate(w, "edit_prod", merch)
-	tools.Logger.Trace("end function")
 
 }
 func Admin_Merch_Delete(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	vars := mux.Vars(r)
 	merch_id, err := strconv.ParseInt(vars["merch_id"], 10, 32)
 	if err != nil {
@@ -247,11 +225,9 @@ func Admin_Merch_Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, "/admin/merchants", http.StatusMovedPermanently)
-	tools.Logger.Trace("end function")
 
 }
 func Admin_Prod_Delete(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	vars := mux.Vars(r)
 	prod_id, err := strconv.ParseInt(vars["prod_id"], 10, 32)
 	merch_id, err := strconv.ParseInt(vars["merch_id"], 10, 32)
@@ -265,7 +241,6 @@ func Admin_Prod_Delete(w http.ResponseWriter, r *http.Request) {
 	}
 	href := fmt.Sprintf("/admin/merchant/%d", merch_id)
 	http.Redirect(w, r, href, http.StatusMovedPermanently)
-	tools.Logger.Trace("end function")
 
 }
 func Admin_Prod_List(w http.ResponseWriter, r *http.Request) {

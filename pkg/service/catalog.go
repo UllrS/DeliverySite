@@ -12,7 +12,6 @@ import (
 )
 
 func Get_Merch_List(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	var field string
 	var field_value string
 	field = "type"
@@ -31,7 +30,6 @@ func Get_Merch_List(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 	}
 	tmpl.ExecuteTemplate(w, "merchant_list", merch_list)
-	tools.Logger.Trace("end function")
 }
 
 func Detail_merchant(w http.ResponseWriter, r *http.Request) {

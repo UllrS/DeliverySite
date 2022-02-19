@@ -13,7 +13,6 @@ import (
 )
 
 func Basket(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 
 	basket_map := sessionmanager.Get_Basket_Map(w, r)
 
@@ -33,7 +32,6 @@ func Basket(w http.ResponseWriter, r *http.Request) {
 	tools.Logger.Tracef("Basket summary: ", sum)
 
 	tmpl.ExecuteTemplate(w, "basket", product_list)
-	tools.Logger.Trace("end function")
 }
 func Basket_add(w http.ResponseWriter, r *http.Request) {
 	prod_id, err := strconv.ParseInt(r.FormValue("prod_id"), 10, 32)
@@ -67,16 +65,13 @@ func Checkout(w http.ResponseWriter, r *http.Request) {
 	shipping := r.FormValue("shipping")
 	date := time.Now().Format("2006-01-02")
 	if !(tools.TelValidator(tel) && tools.BilingValidator(shipping)) {
-		tools.Logger.Trace("Data is no valid")
 		http.Error(w, "Enter telephone and delivery address", http.StatusInternalServerError)
-		tools.Logger.Trace("Empty info")
 		return
 
 	}
 	basket_map := sessionmanager.Get_Basket_Map(w, r)
 	if len(basket_map) < 1 {
 		http.Error(w, "Add item to cart", http.StatusInternalServerError)
-		tools.Logger.Trace("No item in cart")
 		return
 	}
 

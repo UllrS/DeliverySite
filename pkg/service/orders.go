@@ -25,7 +25,6 @@ func Admin_Get_Orders_List(w http.ResponseWriter, r *http.Request) {
 }
 
 func Admin_Order_Delete(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	vars := mux.Vars(r)
 	order_id, err := strconv.ParseInt(vars["order_id"], 10, 32)
 	tools.Logger.Trace("order_id: ", order_id)
@@ -39,10 +38,8 @@ func Admin_Order_Delete(w http.ResponseWriter, r *http.Request) {
 	}
 	href := fmt.Sprint("/admin/orders")
 	http.Redirect(w, r, href, http.StatusMovedPermanently)
-	tools.Logger.Trace("end function")
 }
 func Order_Statusup(w http.ResponseWriter, r *http.Request) {
-	tools.Logger.Trace("start function")
 	vars := mux.Vars(r)
 	order_id, err := strconv.ParseInt(vars["order_id"], 10, 32)
 	if err != nil {
@@ -57,5 +54,4 @@ func Order_Statusup(w http.ResponseWriter, r *http.Request) {
 	href := fmt.Sprintf("/admin/orders")
 	tools.Logger.Tracef("redirect ", href)
 	// http.Redirect(w, r, href, http.StatusMovedPermanently)
-	tools.Logger.Trace("end function")
 }

@@ -12,9 +12,9 @@ import (
 
 func HandleRequest() {
 	rtr := mux.NewRouter()
+	rtr.Use(sessionmanager.LoggingMiddleware)
 	auth_subrouter := rtr.PathPrefix("/admin").Subrouter()
-	auth_subrouter.Use(sessionmanager.LoggingMiddleware)
-	auth_subrouter.Use(sessionmanager.AuthMiddleware)
+	auth_subrouter.Use(sessionmanager.AdminAuthMiddleware)
 
 	auth_subrouter.HandleFunc("/", service.Admin).Methods("GET")
 

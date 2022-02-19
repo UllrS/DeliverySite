@@ -95,7 +95,6 @@ func Select_product_where(key string, value string) (*models.Product, error) {
 	return &product, err
 }
 func Select_product_list_where(key string, value string) ([]models.Product, error) {
-	tools.Logger.Trace("start function")
 
 	db, err := repository_connect()
 	if err != nil {
@@ -122,12 +121,9 @@ func Select_product_list_where(key string, value string) ([]models.Product, erro
 
 		product_list = append(product_list, product)
 	}
-	tools.Logger.Trace("end function")
 	return product_list, err
 }
 func Insert_product(j models.Product) int {
-
-	tools.Logger.Trace("start function")
 	var id int
 	var query_string = fmt.Sprintf("INSERT INTO `products`(`name`, `price`, `category`, `anons`, `merch`, `portion`, `unit`) VALUES ('%s', '%.2f', '%s', '%s', '%d', '%.f', '%s')", j.Name, j.Price, j.Category, j.Anons, j.Merch, j.Portion, j.Unit)
 
@@ -152,12 +148,10 @@ func Insert_product(j models.Product) int {
 		return 0
 	}
 
-	tools.Logger.Trace("end function")
 	return id
 }
 func Insert_merchant(j models.Merchant) int {
 
-	tools.Logger.Trace("start function")
 	var id int
 	var query_string = fmt.Sprintf("INSERT INTO `merchants`(`name`, `type`, `addr`, `anons`, `date`) VALUES ('%s', '%s', '%s', '%s', '%s')", j.Name, j.Type, j.Addr, j.Anons, j.Date)
 
@@ -181,12 +175,10 @@ func Insert_merchant(j models.Merchant) int {
 		tools.Logger.Warn(err.Error())
 		return 0
 	}
-	tools.Logger.Trace("end function")
 	return id
 }
 func Update_merchant(j models.Merchant) error {
 
-	tools.Logger.Trace("start function")
 	var query_string = fmt.Sprintf("UPDATE `merchants` SET `name`='%s',  `addr`='%s', `anons`='%s', `date`='%s' WHERE `id`='%d'", j.Name, j.Addr, j.Anons, j.Date, j.Id)
 
 	db, err := repository_connect()
@@ -200,12 +192,10 @@ func Update_merchant(j models.Merchant) error {
 		tools.Logger.Warn(err.Error())
 		return err
 	}
-	tools.Logger.Trace("end function")
 	return err
 }
 func Update_Product(j models.Product) error {
 
-	tools.Logger.Trace("start function")
 	var query_string = fmt.Sprintf("UPDATE `products` SET `name`='%s', `price`='%.2f', `category`='%s', `anons`='%s', `merch`='%d', `portion`='%.f', `unit`='%s' WHERE `id`='%d'", j.Name, j.Price, j.Category, j.Anons, j.Merch, j.Portion, j.Unit, j.Id)
 
 	db, err := repository_connect()
@@ -219,13 +209,11 @@ func Update_Product(j models.Product) error {
 		tools.Logger.Error(err.Error())
 		return err
 	}
-	tools.Logger.Trace("end function")
 	return err
 }
 
 func Delete_merch(id int) error {
 
-	tools.Logger.Trace("start function")
 	var query_string = fmt.Sprintf("DELETE FROM `merchants` WHERE `id` = '%d'", id)
 
 	db, err := repository_connect()
@@ -248,13 +236,11 @@ func Delete_merch(id int) error {
 		tools.Logger.Warn(err.Error())
 		return err
 	}
-	tools.Logger.Trace("end function")
 	return nil
 
 }
 func Delete_prod(id int) error {
 
-	tools.Logger.Trace("start function")
 	var query_string = fmt.Sprintf("DELETE FROM `products` WHERE `id` = '%d'", id)
 
 	db, err := repository_connect()
@@ -268,6 +254,5 @@ func Delete_prod(id int) error {
 		tools.Logger.Warn(err.Error())
 		return err
 	}
-	tools.Logger.Trace("end function")
 	return nil
 }

@@ -9,7 +9,6 @@ import (
 
 func Admin_AUTH(login string, pwd string) (bool, error) {
 
-	tools.Logger.Trace("start function")
 	db, err := repository_connect()
 	if err != nil {
 		tools.Logger.Error(err.Error())
@@ -84,7 +83,6 @@ func Select_User_List() ([]models.User, error) {
 }
 func Select_User(table_name string, login string, password string) (*sql.Rows, error) {
 
-	tools.Logger.Trace("start function")
 	db, err := repository_connect()
 	if err != nil {
 		tools.Logger.Error(err.Error())
@@ -98,6 +96,5 @@ func Select_User(table_name string, login string, password string) (*sql.Rows, e
 		tools.Logger.Warn(err.Error())
 		return nil, err
 	}
-	tools.Logger.Trace("end function")
 	return res, err
 }

@@ -9,7 +9,6 @@ import (
 
 func Basket_update(user_id int, basket string) error {
 
-	tools.Logger.Trace("start function")
 	var query_string = fmt.Sprintf("UPDATE `users` SET `basket`='%s' WHERE `id` = '%d'", basket, user_id)
 
 	db, err := repository_connect()
@@ -24,11 +23,9 @@ func Basket_update(user_id int, basket string) error {
 		return err
 	}
 	defer insert.Close()
-	tools.Logger.Trace("end function")
 	return err
 }
 func Basket_load(field string, basket_map map[int]int) ([]models.Product, float32, error) {
-	tools.Logger.Trace("start function")
 
 	db, err := repository_connect()
 	if err != nil {
@@ -55,13 +52,11 @@ func Basket_load(field string, basket_map map[int]int) ([]models.Product, float3
 		summ += product.Sumprice
 		product_list = append(product_list, product)
 	}
-	tools.Logger.Trace("end function")
 	return product_list, summ, nil
 }
 
 func Insert_order(j models.Order) error {
 
-	tools.Logger.Trace("start function")
 	var query_string = fmt.Sprintf("INSERT INTO `orders`(`user`, `tel`, `shipping`, `basket`, `date`) VALUES ('%d', '%s', '%s', '%s', '%s')", j.User, j.Tel, j.Shipping, j.Basket, j.Date)
 
 	db, err := repository_connect()
@@ -76,7 +71,6 @@ func Insert_order(j models.Order) error {
 		return err
 	}
 	defer insert.Close()
-	tools.Logger.Trace("end function")
 	return nil
 
 }
