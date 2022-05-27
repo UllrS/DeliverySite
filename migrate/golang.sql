@@ -45,3 +45,5 @@ CREATE TABLE `users` (
   `token` varchar(64) DEFAULT NULL,
   `basket` json DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `admins`(`id`,`login`, `password`) VALUES ('0','admin','admin')

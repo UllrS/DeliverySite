@@ -27,10 +27,12 @@ func InitLogger(lvl logrus.Level) string {
 	if err != nil {
 		panic(err)
 	}
-	logfile, err := os.OpenFile("logs/list.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0640)
+	logfile, err := os.OpenFile("logs/list.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0646)
 	if err == nil {
 		Logger.Out = os.Stdout
 	} else {
+		fmt.Println("PANIC")
+		fmt.Println(err.Error())
 		panic(err)
 	}
 	Logger.SetLevel(lvl)
