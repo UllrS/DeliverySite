@@ -1,9 +1,10 @@
 
 CREATE TABLE `admins` (
-  `id` int(5) NOT NULL,
+  `id` int(5) UNSIGNED NOT NULL,
   `login` varchar(64) NOT NULL,
   `password` varchar(64) NOT NULL,
-  `token` varchar(64) DEFAULT ''
+  `token` varchar(64) DEFAULT '',
+   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `merchants` (
@@ -17,7 +18,7 @@ CREATE TABLE `merchants` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `orders` (
-  `id` int(6) NOT NULL,
+  `id` int(6) UNSIGNED NOT NULL,
   `token` varchar(64) NOT NULL DEFAULT '',
   `user` int(6) DEFAULT '-1',
   `shipping` varchar(100) NOT NULL DEFAULT '',
@@ -28,7 +29,7 @@ CREATE TABLE `orders` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` float DEFAULT NULL,
   `category` varchar(100) NOT NULL DEFAULT '',
@@ -46,4 +47,5 @@ CREATE TABLE `users` (
   `basket` json DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `admins`(`id`,`login`, `password`) VALUES ('0','admin','admin')
+
+INSERT INTO `admins`(`id`, `login`, `password`) VALUES ('0','admin','admin')
